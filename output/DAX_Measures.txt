@@ -1,0 +1,50 @@
+================================================================
+CS2 SIOP — DAX measures   (create a [Measures] table or add to Fact_ForecastActual)
+================================================================
+
+-- Supporting tables to create first --------------------------------
+-- 1) 'Lag Selection'  (Enter Data): single column [Lag] with rows: Resultant, Lag0, Lag1
+--    Add [SortOrder]: Resultant=0, Lag0=1, Lag1=2  -> Sort [Lag] by [SortOrder].
+--    Leave it DISCONNECTED (no relationship) — it drives the SWITCH below.
+-- 2) Relationships: Fact_ForecastActual[Lag] is a real column you can slice directly too.
+
+-- ===== Base measures =====
+Forecast Qty = SUM ( Fact_ForecastActual[ForecastQty] )
+
+Actual Qty   = SUM ( Fact_ForecastActual[ActualQty] )
+
+-- ===== KPI #1: Forecast Accuracy % = 1 - ABS(Lag - Actual)/Actual =====
+Forecast Accuracy % =
+VAR a = [Actual Qty]
+RETURN 1 - DIVIDE ( ABS ( [Forecast Qty] - a ), a )      -- DIVIDE returns blank when a = 0
+
+-- ===== KPI #2: Forecast Bias % = (Lag - Actual)/Actual =====
+Forecast Bias % =
+DIVIDE ( [Forecast Qty] - [Actual Qty], [Actual Qty] )
+
+-- ===== Fair-comparison variants (only where an actual is realized) =====
+-- Recommended for the Accuracy/Bias page so future periods w/o actuals don't distort it.
+Forecast Qty (Realized) =
+CALCULATE ( [Forecast Qty], Fact_ForecastActual[ActualRealized] = TRUE )
+
+Accuracy % (Realized) =
+VAR a = CALCULATE ( [Actual Qty], Fact_ForecastActual[ActualRealized] = TRUE )
+VAR f = [Forecast Qty (Realized)]
+RETURN 1 - DIVIDE ( ABS ( f - a ), a )
+
+-- ===== Lag Selection filter (brief: selecting Lag0 -> sum of the Lag0 columns) =====
+-- Uses the disconnected 'Lag Selection' table.
+Selected Lag Forecast =
+VAR sel = SELECTEDVALUE ( 'Lag Selection'[Lag], "Resultant" )
+RETURN CALCULATE ( [Forecast Qty], Fact_ForecastActual[Lag] = sel )
+
+-- Per-measure version if you want three cards (Revenue / NonRevenue / Capex):
+Selected Lag Forecast (Revenue) =
+VAR sel = SELECTEDVALUE ( 'Lag Selection'[Lag], "Resultant" )
+RETURN CALCULATE ( [Forecast Qty],
+          Fact_ForecastActual[Lag] = sel,
+          Fact_ForecastActual[MeasureType] = "Revenue" )
+-- (duplicate, swapping "Revenue" for "NonRevenue" / "Capex")
+
+-- ALTERNATIVE to the disconnected table: a Power BI Field Parameter over the three
+-- lag measures. Either is acceptable; mention the trade-off in your report.

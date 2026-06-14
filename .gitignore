@@ -1,0 +1,9 @@
+# tooling / temp
+node_modules/
+~$*
+output/_*.jpg
+output/page-*.jpg
+*.tmp
+
+# unrelated case study 1 supporting files
+cs1_files/

@@ -1,0 +1,46 @@
+{
+  "name": "SIOP Executive",
+  "dataColors": ["#1E2761", "#2E75B6", "#028090", "#E08E45", "#59607A", "#97BC62", "#6D2E46", "#00A896"],
+  "background": "#FFFFFF",
+  "foreground": "#1E2761",
+  "tableAccent": "#2E75B6",
+  "good": "#2E7D32",
+  "neutral": "#E08E45",
+  "bad": "#C62828",
+  "maximum": "#1E2761",
+  "center": "#CADCFC",
+  "minimum": "#FFFFFF",
+  "visualStyles": {
+    "*": {
+      "*": {
+        "background": [{ "show": true, "color": { "solid": { "color": "#FFFFFF" } }, "transparency": 0 }],
+        "border": [{ "show": true, "color": { "solid": { "color": "#E3E6EF" } }, "radius": 8 }],
+        "dropShadow": [{ "show": true, "color": { "solid": { "color": "#1E2761" } }, "transparency": 88, "blur": 6, "angle": 90, "distance": 2 }],
+        "title": [{ "show": true, "fontColor": { "solid": { "color": "#1E2761" } }, "background": { "solid": { "color": "#FFFFFF" } }, "fontSize": 12, "fontFamily": "Segoe UI Semibold", "alignment": "left" }]
+      }
+    },
+    "card": {
+      "*": {
+        "labels": [{ "color": { "solid": { "color": "#1E2761" } }, "fontSize": 30, "fontFamily": "Segoe UI Semibold" }],
+        "categoryLabels": [{ "color": { "solid": { "color": "#59607A" } }, "fontSize": 11 }]
+      }
+    },
+    "slicer": {
+      "*": {
+        "background": [{ "show": true, "color": { "solid": { "color": "#FFFFFF" } }, "transparency": 0 }],
+        "items": [{ "fontColor": { "solid": { "color": "#1E2761" } }, "background": { "solid": { "color": "#FFFFFF" } }, "outline": "Frame" }],
+        "header": [{ "fontColor": { "solid": { "color": "#1E2761" } }, "fontSize": 11, "fontFamily": "Segoe UI Semibold" }]
+      }
+    },
+    "columnChart": {
+      "*": {
+        "labels": [{ "color": { "solid": { "color": "#1E2761" } } }]
+      }
+    },
+    "page": {
+      "*": {
+        "background": [{ "color": { "solid": { "color": "#F4F6FB" } }, "transparency": 0 }]
+      }
+    }
+  }
+}
